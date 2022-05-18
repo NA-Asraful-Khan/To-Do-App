@@ -1,37 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
+import TODOTABLE from './TODOTABLE';
 
 const Home = () => {
+    const [items, setItem] = useState([]);
+
+    useEffect(() => {
+        fetch(`data.json`)
+            .then(response => response.json())
+            .then(data => setItem(data));
+    }, []);
+
     return (
-        <Table striped bordered hover>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Username</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td colSpan={2}>Larry the Bird</td>
-                    <td>@twitter</td>
-                </tr>
-            </tbody>
-        </Table>
+        <div>
+            <h1>Your TO DO List</h1>
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Task Name</th>
+                        <th colSpan={2}>Task Description in Detail's</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {
+                        items.map(item => 
+                        <tr key={item._id}>
+                            <td>1</td>
+                            <td>{item.taskName}</td>
+                            <td colSpan={3}>{item.description}</td>
+                        </tr>
+                        )
+                    }
+                </tbody>
+            </Table>
+        </div>
+
     );
 };
 
