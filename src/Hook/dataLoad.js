@@ -5,7 +5,7 @@ const useData = () => {
     const [items, setItem] = useState([]);
     
     useEffect(() => {
-        fetch(`http://localhost:5000/list`)
+        fetch(`https://dry-spire-70465.herokuapp.com/list`)
             .then(response => response.json())
             .then(data => setItem(data));
     }, []);

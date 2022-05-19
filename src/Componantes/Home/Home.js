@@ -14,7 +14,7 @@ const Home = () => {
     const handleDelete = (id) => {
         const proceed = window.confirm("Are you sure you want to delete?");
         if (proceed) {
-            const url = `http://localhost:5000/list/${id}`;
+            const url = `https://dry-spire-70465.herokuapp.com/list/${id}`;
             fetch(url, {
                 method: "DELETE"
             })

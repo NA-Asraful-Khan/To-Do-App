@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 import useData from '../../Hook/dataLoad';
 
 
@@ -10,9 +11,9 @@ const TaskForm = () => {
         const taskName = event.target.name.value;
         const description = event.target.description.value;
         const task = {taskName, description}
-        console.log(taskName,description)
+        event.preventDefault();
         
-        fetch('http://localhost:5000/list',{
+        fetch('https://dry-spire-70465.herokuapp.com/list',{
             method: 'POST',
             headers:{
                 'Content-Type': 'application/json'
@@ -21,7 +22,7 @@ const TaskForm = () => {
         })
         .then(res => res.json())
         .then(data =>{
-            console.log(data)
+            toast("Task Added. Please Reload!")
         }) 
 
         
