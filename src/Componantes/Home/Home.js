@@ -1,15 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
+import { toast, ToastContainer } from 'react-toastify';
+import useData from '../../Hook/dataLoad';
+import TaskForm from './TaskForm';
 import TODOTABLE from './TODOTABLE';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Home = () => {
-    const [items, setItem] = useState([]);
+    const [items, setItem] = useData();
 
-    useEffect(() => {
-        fetch(`data.json`)
-            .then(response => response.json())
-            .then(data => setItem(data));
-    }, []);
+    let complete = false;
+
+    const handleDelete = (id) => {
+        const proceed = window.confirm("Are you sure you want to delete?");
+        if (proceed) {
+            const url = `http://localhost:5000/list/${id}`;
+            fetch(url, {
+                method: "DELETE"
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.deletedCount > 0) {
+                        const remaining = items.filter(item => item._id !== id);
+                        setItem(remaining);
+
+                    }
+                })
+        }
+    }
+    const handleComplete = () => {
+        toast("Task Completed");
+    
+    }
 
     return (
         <div>
@@ -25,16 +47,24 @@ const Home = () => {
                 <tbody>
 
                     {
-                        items.map(item => 
-                        <tr key={item._id}>
-                            <td>1</td>
-                            <td>{item.taskName}</td>
-                            <td colSpan={3}>{item.description}</td>
-                        </tr>
+                        items.map(item =>
+                            <tr key={item._id}>
+                                <td>*</td>
+                                <td>{item.taskName}</td>
+                                <td colSpan={3}>{item.description}</td>
+                                <td>
+                                    <button className={`btn mx-2 btn-success`} onClick={handleComplete}>Complete</button>
+                                    <button className='btn btn-danger' onClick={() => handleDelete(item._id)}>Delete</button>
+
+                                </td>
+                            </tr>
                         )
                     }
                 </tbody>
             </Table>
+            <h2>Add Your Task</h2>
+            <TaskForm></TaskForm>
+            <ToastContainer></ToastContainer>
         </div>
 
     );
